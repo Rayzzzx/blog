@@ -1,48 +1,50 @@
-require "test_helper"
+class PostsController < ApplicationController
+  before_action :set_post, only: [:show, :edit, :update, :destroy]
 
-class PostsControllerTest < ActionDispatch::IntegrationTest
-  setup do
-    @post = posts(:one)  # Assuming you have a fixture named 'one'
+  def edit
   end
 
-  test "should get index" do
-    get posts_url
-    assert_response :success
+  def index
+    @posts = Post.all
   end
 
-  test "should get new" do
-    get new_post_url
-    assert_response :success
-  end
-
-  test "should create post" do
-    assert_difference('Post.count') do
-      post posts_url, params: { post: { title: 'New Post', content: 'New Content' } }
+  def update
+    if @post.update(post_params)
+      redirect_to @post, notice: 'Post was successfully updated.'
+    else
+      render :edit
     end
-
-    assert_redirected_to post_url(Post.last)
   end
 
-  test "should show post" do
-    get post_url(@post)
-    assert_response :success
+  def destroy
+    @post.destroy
+    redirect_to posts_url, notice: 'Post was successfully destroyed.'
   end
 
-  test "should get edit" do
-    get edit_post_url(@post)
-    assert_response :success
+  def show
+    @post = Post.find(params[:id])
   end
 
-  test "should update post" do
-    patch post_url(@post), params: { post: { title: 'Updated Title', content: 'Updated Content' } }
-    assert_redirected_to post_url(@post)
+  def new
+    @post = Post.new
   end
 
-  test "should destroy post" do
-    assert_difference('Post.count', -1) do
-      delete post_url(@post)
+  def create
+    @post = Post.new(post_params)
+    if @post.save
+      redirect_to @post, notice: 'Post was successfully created.'
+    else
+      render :new
     end
+  end
 
-    assert_redirected_to posts_url
+  private
+
+  def set_post
+    @post = Post.find(params[:id])
+  end
+
+  def post_params
+    params.require(:post).permit(:title, :content)
   end
 end

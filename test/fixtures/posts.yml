@@ -5,5 +5,5 @@ one:
   content: MyText
 
 two:
-  title: MyString
-  content: MyText
+  title: OtherString
+  content: OtherText
