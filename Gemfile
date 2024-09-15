@@ -55,3 +55,6 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+gem 'webpacker', '~> 5.0'
+gem 'react-rails'
